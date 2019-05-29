@@ -1,0 +1,8 @@
+class Snake{
+  constructor (){
+
+  }
+  keepMoving(){
+
+  }
+}
