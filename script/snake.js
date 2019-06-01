@@ -17,7 +17,5 @@ onkeydown = onkeyup = function (e) {
   e = e || event; // to deal with IE
   map[e.keyCode] = e.type == 'keydown';
   console.table(map);
-
-
-
+  
 }

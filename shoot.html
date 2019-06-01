@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Game</title>
+
+    <style>
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+</head>
+<body>
+    
+    <canvas id="canvas"></canvas>
+
+    <script>
+        
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        canvas.width = 640;
+        canvas.height = 480;
+        var enemies = [];
+        var bullets = [];
+        var frames = 0;
+        class Player {
+            constructor(x, y, w, h) {
+                this.x = x;
+                this.y = y;
+                this.w = w;
+                this.h = h;
+                this.life = 3;
+            }
+            draw() {
+                ctx.fillStyle = 'green';
+                ctx.fillRect(this.x, this.y, this.w, this.h);
+            }
+            crashWith(enemy) {
+                return (this.x < enemy.x + enemy.w) &&
+                       (this.x + this.w > enemy.x) &&
+                       (this.y < enemy.y + enemy.w) &&
+                       (this.y + this.w > enemy.y)
+            }
+        }
+        class Bullet {
+            constructor(x, y, w, h) {
+                this.x = x;
+                this.y = y;
+                this.w = w;
+                this.h = h;
+            }
+            draw() {
+                this.y -= 2;
+                ctx.fillStyle = 'black';
+                ctx.fillRect(this.x, this.y, this.w, this.h);
+            }
+            crashWith(enemy) {
+                return (this.x < enemy.x + enemy.w) &&
+                       (this.x + this.w > enemy.x) &&
+                       (this.y < enemy.y + enemy.w) &&
+                       (this.y + this.w > enemy.y)
+            }
+        }
+        class Enemy {
+            constructor(x, y, w, h) {
+                this.x = x;
+                this.y = y;
+                this.w = w;
+                this.h = h;
+            }
+            draw() {
+                ctx.fillStyle = 'red';
+                //this.x -= 2;
+                this.y += 2;
+                ctx.fillRect(this.x, this.y, this.w, this.h);
+            }
+        }
+        var player = new Player(260,300, 20, 20);
+        
+        function generateBullets() {
+            bullets.push(new Bullet(player.x+5,player.y-10,10,10));
+        }
+        function drawBullets() {
+            bullets.forEach(function(bullet, i) {
+                bullet.draw();
+            })
+        }
+        function generateEnemies() {
+            if(frames % 100 === 0) {
+                enemies.push(new Enemy(250,0,50,50));
+            }
+        }
+        function drawEnemies() {
+            enemies.forEach(function(enemy, i) {
+                enemy.draw();
+            })
+        }
+        function checkCollition() {
+            enemies.forEach((enemy, ei) => {
+                if(player.crashWith(enemy)) {
+                    enemies.splice(ei,1);
+                    player.life--;
+                    console.log(player.life)
+                }
+                bullets.forEach((bullet, bi) => {
+                    if(bullet.crashWith(enemy)) {
+                        bullets.splice(bi,1);
+                        enemies.splice(ei,1);
+                    }
+                })
+            });
+        }
+        function gameOver() {
+            if(player.life === 0) {
+                clearInterval(interval);
+            }
+        }
+        function draw() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            generateEnemies();
+            drawEnemies();
+            player.draw();
+            checkCollition();
+            drawBullets();
+            gameOver(); 
+            frames++;
+        }
+        var interval = setInterval(draw, 1000/60)
+        window.addEventListener('keypress', function(e) {
+            if(e.keyCode === 32) {
+                generateBullets();
+            }
+        })
+        
+        
+        // var canvas = document.getElementById('canvas');
+        // var ctx = canvas.getContext('2d');
+        // canvas.width = 640;
+        // canvas.height = 480;
+        // var enemies = [];
+        // var bullets = [];
+        // var frames = 0;
+        // class Player {
+        //     constructor(x, y, w, h) {
+        //     this.x = x;
+        //     this.y = y;
+        //     this.w = w;
+        //     this.h = h;
+        //     this.life = 3;
+        //     }
+        //     draw() {
+        //         ctx.fillStyle = 'green';
+        //         ctx.fillRect(this.x, this.y, this.w, this.h);
+        //     }
+        //     crashWith(enemy) {
+        //         return (this.x + this.w > enemy.x) &&
+        //                (this.x < enemy.x + enemy.w) &&
+        //                (this.y + this.w > enemy.y) &&
+        //                (this.y < enemy.y + enemy.w); 
+        //     }
+        // }
+        // class Enemy {
+        //     constructor(x, y, w, h) {
+        //     this.x = x;
+        //     this.y = y;
+        //     this.w = w;
+        //     this.h = h;
+        //     }
+        //     draw() {
+        //         this.x -= 2;
+        //         ctx.fillStyle = 'red';
+        //         ctx.fillRect(this.x, this.y, this.w, this.h);
+        //     }
+        // }
+        // class Bullet {
+        //     constructor(x, y, w, h) {
+        //     this.x = x;
+        //     this.y = y;
+        //     this.w = w;
+        //     this.h = h;
+        //     }
+        //     draw() {
+        //         ctx.fillStyle = 'black';
+        //         this.x += 2;
+        //         ctx.fillRect(this.x, this.y, this.w, this.h);
+        //     }
+        //     crashWith(enemy) {
+        //         return (this.x + this.w > enemy.x) &&
+        //                (this.x < enemy.x + enemy.w) &&
+        //                (this.y + this.w > enemy.y) &&
+        //                (this.y < enemy.y + enemy.w); 
+        //     }
+        // }
+        // var player = new Player(50, 50, 20, 20);
+        // function generateBullet() {
+        //     bullets.push(new Bullet(player.x + 20, player.y + 5, 10, 10));
+        // }
+        // function generateEnemies() {
+        //     if(frames % 100 === 0) {
+        //         enemies.push(new Enemy(500,50,50,50));
+        //     }
+        // }
+        // function drawEnemies() {
+        //     enemies.forEach(e => {
+        //         e.draw()
+        //     })
+        // }
+        // function drawBullets() {
+        //     bullets.forEach(e => {
+        //         e.draw()
+        //     })
+        // }
+        // function checkCollition() {
+        //     enemies.forEach((enemy, ei) => {
+        //         if(player.crashWith(enemy)) {
+        //             enemies.splice(ei,1);
+        //         }
+        //         bullets.forEach((bullet, bi) => {
+        //             if(bullet.crashWith(enemy)) {
+        //                 bullets.splice(bi,1);
+        //                 enemies.splice(ei,1);
+        //             }
+        //         })
+        //     });
+        // }
+        // function draw() {
+        //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+        //     player.draw();
+        //     generateEnemies();
+        //     drawEnemies();
+        //     drawBullets();
+        //     checkCollition();
+        //     frames++;
+        // }
+        // var interval = setInterval(draw, 1000/60)
+        // window.addEventListener('keypress', function(e) {
+        //     if(e.keyCode === 32) {
+        //         generateBullet();
+        //     }
+        // });
+     
+        
+    </script>
+
+
+</body>
+</html>
