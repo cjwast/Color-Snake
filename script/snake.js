@@ -6,14 +6,21 @@ class Snake {
     this.y = y;
     this.w = w;
     this.h = h;
-    this.speedX = baseSpeedX;
+    this.speedX = 1;
     this.speedY = 0;
+    this.tail = 0;
   }
 
   keepMoving() {
+    if (frs % baseSpeed === 0) {
+      this.x += this.speedX * scale;
+      this.y += this.speedY * scale;
+    }
     ctx.fillStyle = snakeColor;
-    this.x += this.speedX;
-    this.y += this.speedY;
     ctx.fillRect(this.x, this.y, this.w, this.h);
+  }
+
+  eats(food) {
+    return this.x < food.x + food.w && this.x + this.w > food.x && this.y < food.y + food.w && this.y + this.w > enemy.y;
   }
 }
