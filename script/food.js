@@ -10,7 +10,9 @@ class Food {
   }
 
   appear(x, y, color = '#e8408e') {
+    this.x = x;
+    this.y = y;
     ctx.fillStyle = color;
-    ctx.fillRect(x, y, this.w, this.h);
+    ctx.fillRect(this.x, this.y, this.w, this.h);
   }
 }
