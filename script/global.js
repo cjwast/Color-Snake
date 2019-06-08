@@ -3,9 +3,16 @@
 
 // Clases auxiliares
 class Direction {
-  constructor(x, y) {
-    this.x = 0;
-    this.y = 0;
+  constructor(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
+  }
+}
+
+class Position {
+  constructor(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
   }
 }
 
@@ -32,28 +39,14 @@ const DIRECTION_DOWN = new Direction(0, 1);
 const DIRECTION_RIGTH = new Direction(1, 0);
 
 // Arrow up
-    case 38:
-snake.direction = DIRECTION_UP;
-break;
-    // Arrow down
-    case 40:
-snake.speedX = 0;
-snake.speedY = 1;
-break;
-    // Arrow left
-    case 37:
-snake.speedX = -1;
-snake.speedY = 0;
-break;
-    // Arrow right
-    case 39:
-snake.speedX = 1;
-snake.speedY = 0;
-break;
-    // Spacebar
-    case 32:
+const ARROW_UP = 38;
+const ARROW_DOWN = 40;
+const ARROW_LEFT = 37;
+const ARROW_RIGHT = 39;
+const SPACEBAR = 32;
+
 
 // Variables de gameplay
-let baseSpeed = 20; // menor el numero, mayo la velocidad
+let speed = 20; // menor el numero, mayor la velocidad
 let interval = 0;
 let frs = 0;

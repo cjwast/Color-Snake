@@ -4,7 +4,7 @@ canvas.height = canvasHeight;
 const snake = new Snake();
 const food = new Food();
 let firstRun = true;
-let foodPosition = { x: 0, y: 0 };
+let foodPosition = new Position();
 let gameOver = false;
 
 // Funciones
@@ -20,7 +20,7 @@ function randomBoard(top = 0) {
 function randomPosition() {
   const x = scale * randomBoard(canvasWidth);
   const y = scale * randomBoard(canvasHeight);
-  return { x, y };
+  return new Position(x, y);
 }
 
 // Validar las condiciones de game over
@@ -53,9 +53,10 @@ function run() {
   }
   if (snake.eats(food)) {
     foodPosition = randomPosition();
-    snake.tailLength += 1;
+
+    snake.increaseTail();
   }
-  food.appear(foodPosition.x, foodPosition.y);
+  food.appear(foodPosition);
   snake.keepMoving();
   frs += 1;
 }
@@ -63,26 +64,23 @@ function run() {
 function keyDownEvent(e) {
   switch (e.keyCode) {
     // Arrow up
-    case 38:
+    case ARROW_UP:
       snake.direction = DIRECTION_UP;
       break;
     // Arrow down
-    case 40:
-      snake.speedX = 0;
-      snake.speedY = 1;
+    case ARROW_DOWN:
+      snake.direction = DIRECTION_DOWN;
       break;
     // Arrow left
-    case 37:
-      snake.speedX = -1;
-      snake.speedY = 0;
+    case ARROW_LEFT:
+      snake.direction = DIRECTION_LEFT;
       break;
     // Arrow right
-    case 39:
-      snake.speedX = 1;
-      snake.speedY = 0;
+    case ARROW_RIGHT:
+      snake.direction = DIRECTION_RIGTH;
       break;
     // Spacebar
-    case 32:
+    case SPACEBAR:
       if (interval !== 0) {
         clearInterval(interval);
         interval = 0;

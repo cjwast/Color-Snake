@@ -1,31 +1,53 @@
+/* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 class Snake {
   constructor(x = startingPointX, y = startingPointY, w = scale, h = scale) {
-    this.x = x;
-    this.y = y;
+    this.position = new Position(x, y);
     this.w = w;
     this.h = h;
-    this.speedX = 1;
-    this.speedY = 0;
     this.direction = new Direction(1, 0);
-    this.tailLength = 0;
+    this.tailLength = 3;
     this.drawedTail = [];
   }
 
-  keepMoving() {
-    if (frs % baseSpeed === 0) {
-      this.x += this.direction.x * scale;
-      this.y += this.direction.y * scale;
+  increaseTail() {
+    // snake.tailLength += 1;
+
+    while (this.drawedTail.length < this.tailLength) {
+      this.drawedTail.push({
+        position: new Position(),
+        direction: new Direction(),
+        w: this.w,
+        h: this.h,
+      });
     }
+  }
+
+  keepMoving() {
+    this.increaseTail();
+    if (frs % speed === 0) {
+      this.drawedTail[0].position = this.position;
+      this.position.x += this.direction.x * scale;
+      this.position.y += this.direction.y * scale;
+    }
+
+    for (let i = this.drawedTail.length - 1; i > 0; i--) {
+      this.drawedTail[i] = this.drawedTail[i];
+    }
+    this.drawedTail.forEach((tail) => {
+      ctx.fillStyle = snakeColor;
+      ctx.fillRect(tail.position.x, tail.position.y, tail.w, tail.h);
+    });
+
     ctx.fillStyle = snakeColor;
-    ctx.fillRect(this.x, this.y, this.w, this.h);
+    ctx.fillRect(this.position.x, this.position.y, this.w, this.h);
   }
 
   eats(food) {
-    return this.x < food.x + food.w &&
-      this.x + this.w > food.x &&
-      this.y < food.y + food.w &&
-      this.y + this.w > food.y;
+    return this.position.x < food.position.x + food.h &&
+      this.position.x + this.w > food.position.x &&
+      this.position.y < food.position.y + food.w &&
+      this.position.y + this.w > food.position.y;
   }
 }
