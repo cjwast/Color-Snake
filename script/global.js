@@ -9,16 +9,9 @@ class Direction {
   }
 }
 
-class Position {
-  constructor(x = 0, y = 0) {
-    this.x = x;
-    this.y = y;
-  }
-}
-
 // Constantes de dibujo del tablero
 const scale = 20;
-const drawSpeed = 1000 / 1; // 100 / 60 son 60 cuados por segundo
+const drawSpeed = 1000 / 240; // 100 / 60 son 60 cuados por segundo
 const canvasWidth = scale * 30;
 const canvasHeight = scale * 20;
 const canvas = document.getElementById('game');
@@ -47,6 +40,6 @@ const SPACEBAR = 32;
 
 
 // Variables de gameplay
-let speed = 1; // menor el numero, mayor la velocidad
+let speed = 15; // menor el numero, mayor la velocidad
 let interval = 0;
 let frs = 0;

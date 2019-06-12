@@ -3,62 +3,52 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 class Snake {
-  constructor(x = startingPointX, y = startingPointY, w = scale, h = scale) {
-    this.position = new Position(x, y);
+  constructor(sx = startingPointX, sy = startingPointY, w = scale, h = scale) {
     this.w = w;
     this.h = h;
-    this.direction = new Direction(1, 0);
-    this.tailLength = 5;
-    this.drawedTail = [];
+    this.direction = DIRECTION_RIGTH;
+    this.pieces = [{ x: sx, y: sy }];
+    this.nextX = 0;
+    this.nextY = 0;
   }
 
-  increaseTail() {
-    // this.tailLength += 1;
-    while (this.drawedTail.length < this.tailLength) {
-      this.drawedTail.push({
-        position: new Position(this.position.x, this.position.y),
-        w: this.w,
-        h: this.h,
-      });
-    }
-  }
+  keepMoving(food) {
+    // Dibuja a los cuadros por segundo del interval
+    this.drawSnake();
 
-  keepMoving() {
-    this.increaseTail();
-
-
-    console.group(`Current frame: ${frs}`);
-
+    // Se mueve a la velocidad definida por speed
     if (frs % speed === 0) {
-      this.position.x += this.direction.x * scale;
-      this.position.y += this.direction.y * scale;
+      // Obtiene la siguiente posición y la inserta en el arreglo
+      this.getNext();
+      this.pieces.unshift({
+        x: this.nextX,
+        y: this.nextY,
+      });
+
+      // Si en la siguiente posicion come score++, FALSO=> remueve cola
+      if (this.eats(food)) {
+        return true;
+      }
+      this.pieces.pop();
     }
-
-
-    this.drawedTail[0].position = new Position(this.position.x, this.position.y);
-
-    for (let i = this.tailLength; i < 0; i--) {
-      this.drawedTail[i].position = new Position(this.drawedTail[i - 1].position.x, this.drawedTail[i - 1].position.y);
-    }
-
-    this.drawedTail.forEach(e => console.log(`F => ${frs} tail position (${e.position.x}, ${e.position.y})`));
-    console.log(`F => ${frs} snake position (${this.position.x}, ${this.position.y})`);
-
-    this.drawedTail.forEach((tail) => {
-      ctx.fillStyle = snakeColor;
-      ctx.fillRect(tail.position.x, tail.position.y, scale, scale);
-    });
-
-    ctx.fillStyle = snakeColor;
-    ctx.fillRect(this.position.x, this.position.y, this.w, this.h);
-
-    console.groupEnd();
+    return false;
   }
 
   eats(food) {
-    return this.position.x < food.position.x + food.h &&
-      this.position.x + this.w > food.position.x &&
-      this.position.y < food.position.y + food.w &&
-      this.position.y + this.w > food.position.y;
+    return this.nextX === food.x && this.nextY === food.y;
+  }
+
+  drawSnake() {
+    this.pieces.forEach((piece, i) => {
+      ctx.fillStyle = (i === 0) ? '#5cb2ab' : 'white';
+      ctx.fillRect(piece.x, piece.y, scale, scale);
+      ctx.strokeStyle = '#a8eae5';
+      ctx.strokeRect(piece.x, piece.y, scale, scale);
+    });
+  }
+
+  getNext() {
+    this.nextX = (this.direction.x * scale) + this.pieces[0].x;
+    this.nextY = (this.direction.y * scale) + this.pieces[0].y;
   }
 }

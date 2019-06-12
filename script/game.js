@@ -3,33 +3,26 @@ canvas.width = canvasWidth;
 canvas.height = canvasHeight;
 const snake = new Snake();
 const food = new Food();
+let foodPosition = { x: 0, y: 0 };
 let firstRun = true;
-let foodPosition = new Position();
-let gameOver = false;
+let score = 0;
 
 // Funciones
-function drawCanvas() {
+function clearCanvas() {
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 }
 
-function randomBoard(top = 0) {
-  return Math.floor(Math.random() * (top / scale));
-}
-
 function randomPosition() {
-  const x = scale * randomBoard(canvasWidth);
-  const y = scale * randomBoard(canvasHeight);
-  return new Position(x, y);
+  const col = Math.floor(Math.random() * (canvasWidth / scale));
+  const row = Math.floor(Math.random() * (canvasHeight / scale));
+  return { x: scale * col, y: scale * row };
 }
 
 // Validar las condiciones de game over
 function isGameOver() {
-  if (snake.x + snake.w >= canvasWidth || snake.y + snake.h >= canvasHeight || snake.x <= 0 || snake.y <= 0) {
-    gameOver = true;
-  } else {
-    gameOver = false;
-  }
-  return gameOver;
+  return (snake.x + snake.w >= canvasWidth
+    || snake.y + snake.h >= canvasHeight
+    || snake.x <= 0 || snake.y <= 0);
 }
 
 function showGameOverScreen() {
@@ -40,60 +33,45 @@ function showGameOverScreen() {
   }
 }
 
+// Funcion principal
 function run() {
   if (isGameOver()) {
     showGameOverScreen();
   }
 
-  drawCanvas();
+  clearCanvas();
   if (firstRun) {
     foodPosition = randomPosition();
     firstRun = false;
   }
-  if (snake.eats(food)) {
+  if (snake.keepMoving(food)) {
     foodPosition = randomPosition();
-
-    snake.increaseTail();
+    score += 1;
   }
-  food.appear(foodPosition);
-  snake.keepMoving();
+  food.appear(foodPosition.x, foodPosition.y);
   frs += 1;
 }
 
+// Evento
 function keyDownEvent(e) {
-  switch (e.keyCode) {
-    // Arrow up
-    case ARROW_UP:
-      snake.direction = DIRECTION_UP;
-      break;
-    // Arrow down
-    case ARROW_DOWN:
-      snake.direction = DIRECTION_DOWN;
-      break;
-    // Arrow left
-    case ARROW_LEFT:
-      snake.direction = DIRECTION_LEFT;
-      break;
-    // Arrow right
-    case ARROW_RIGHT:
-      snake.direction = DIRECTION_RIGTH;
-      break;
-    // Spacebar
-    case SPACEBAR:
-      if (interval !== 0) {
-        clearInterval(interval);
-        interval = 0;
-      } else {
-        interval = setInterval(run, drawSpeed);
-      }
-      break;
-    default:
-      snake.speedX = snake.speedX;
-      snake.speedY = snake.speedY;
-      break;
+  if (e.keyCode === ARROW_UP && snake.direction != DIRECTION_DOWN) {
+    snake.direction = DIRECTION_UP;
+  } else if (e.keyCode === ARROW_DOWN && snake.direction != DIRECTION_UP) {
+    snake.direction = DIRECTION_DOWN;
+  } else if (e.keyCode === ARROW_LEFT && snake.direction != DIRECTION_RIGTH) {
+    snake.direction = DIRECTION_LEFT;
+  } else if (e.keyCode === ARROW_RIGHT && snake.direction != DIRECTION_LEFT) {
+    snake.direction = DIRECTION_RIGTH;
+  } else if (e.keyCode === SPACEBAR) {
+    if (interval !== 0) {
+      clearInterval(interval);
+      interval = 0;
+    } else {
+      interval = setInterval(run, drawSpeed);
+    }
   }
 }
 
-// Eventos
+// INICIO
 onkeydown = keyDownEvent;
 interval = setInterval(run, drawSpeed);
