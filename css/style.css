@@ -1,14 +1,14 @@
-*{
+* {
   border: 0;
   padding: 0;
   margin: 0;
-  background-color: grey;
+  background-color: rgb(149, 186, 235);
 }
 
-canvas{
-  background-color: greenyellow;
+canvas {
+  background-color: #344259;
 }
 
-p{
+p {
   color: white;
 }

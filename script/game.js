@@ -9,8 +9,7 @@ let gameOver = false;
 
 // Funciones
 function drawCanvas() {
-  ctx.fillStyle = backGroundCanvas;
-  ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 }
 
 function randomBoard(top = 0) {
