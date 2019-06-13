@@ -6,7 +6,7 @@ const food = new Food();
 let foodPosition = { x: 0, y: 0 };
 let foodColor = colorArray[0];
 let firstRun = true;
-let score = 0;
+
 
 // Funciones
 function clearCanvas() {
@@ -53,7 +53,6 @@ function run() {
   if (snake.keepMoving(food)) {
     foodPosition = randomPosition();
     foodColor = randomColor();
-    score += 1;
   }
   food.appear(foodPosition.x, foodPosition.y, foodColor);
   frs += 1;

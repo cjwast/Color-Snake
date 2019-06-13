@@ -3,7 +3,11 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 class Snake {
-  constructor(sx = startingPointX, sy = startingPointY, w = scale, h = scale, color = colorArray[0]) {
+  constructor(sx = startingPointX,
+    sy = startingPointY,
+    w = scale,
+    h = scale,
+    color = colorArray[0]) {
     this.w = w;
     this.h = h;
     this.direction = DIRECTION_RIGTH;
