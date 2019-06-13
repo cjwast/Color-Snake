@@ -11,6 +11,7 @@ let firstRun = true;
 // Funciones
 function clearCanvas() {
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+  colorCtx.clearRect(0, 0, colorCanvas.width, colorArray.height);
 }
 
 function randomPosition() {
@@ -40,6 +41,7 @@ function showGameOverScreen() {
 
 // Funcion principal
 function run() {
+
   if (isGameOver()) {
     showGameOverScreen();
   }
@@ -50,16 +52,20 @@ function run() {
     foodColor = randomColor();
     firstRun = false;
   }
+
+  // Movimiento de snake y validacion si come o no
   if (snake.keepMoving(food)) {
     foodPosition = randomPosition();
     foodColor = randomColor();
   }
   food.appear(foodPosition.x, foodPosition.y, foodColor);
+  snake.drawColors();
   frs += 1;
 }
 
 // Evento
 function keyDownEvent(e) {
+  // Direccion de snake
   if (e.keyCode === W && snake.direction !== DIRECTION_DOWN) {
     snake.direction = DIRECTION_UP;
   } else if (e.keyCode === S && snake.direction !== DIRECTION_UP) {
@@ -75,6 +81,12 @@ function keyDownEvent(e) {
     } else {
       interval = setInterval(run, drawSpeed);
     }
+  } else if (e.keyCode === ARROW_UP) {
+    snake.rollsColors('UP');
+  } else if (e.keyCode === ARROW_DOWN) {
+    snake.rollsColors('DOWN');
+  } else if (e.keyCode === ARROW_RIGHT) {
+    snake.setColor();
   }
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-console */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-undef */
@@ -42,12 +43,13 @@ class Snake {
 
   eats(food) {
     if (this.nextX === food.x && this.nextY === food.y) {
-      this.bodyColor = food.color;
+      this.colorArray.push(food.color);
       return true;
     }
     return false;
   }
 
+  // Metodo para dibujar las piezas
   drawSnake() {
     this.pieces.forEach((piece, i) => {
       ctx.fillStyle = (i === 0) ? '#5cb2ab' : this.bodyColor.rgb;
@@ -57,8 +59,35 @@ class Snake {
     });
   }
 
+  // Metodo para dibujar los colores
+  drawColors() {
+    this.colorArray.forEach((color, i) => {
+      colorCtx.fillStyle = color.rgb;
+      colorCtx.fillRect(0, i * colorScale, 60, 40);
+      colorCtx.font = '20px Georgia';
+      colorCtx.fillText(color.name, 0, i * colorScale);
+    });
+  }
+
+  // obtiene la siguiente posicion de la pieza
   getNext() {
     this.nextX = (this.direction.x * scale) + this.pieces[0].x;
     this.nextY = (this.direction.y * scale) + this.pieces[0].y;
+  }
+
+  // rota los colores acorde a las arrow keys
+  rollsColors(direction = '') {
+    if (direction === 'UP') {
+      this.colorArray.push(this.colorArray.shift());
+    } else {
+      this.colorArray.unshift(this.colorArray.pop());
+    }
+  }
+
+  // establece el color acorde a la flecha derecha
+  setColor() {
+    if (this.colorArray.length > 0) {
+      this.bodyColor = this.colorArray[0];
+    }
   }
 }

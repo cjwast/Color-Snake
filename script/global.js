@@ -20,6 +20,17 @@ const ctx = canvas.getContext('2d', {
   preserveDrawingBuffer: true,
 });
 
+// Constantes para el control de colores
+const colorScale = 40;
+const colorWidth = 60;
+const colorHeight = 40;
+const colorCanvas = document.getElementById('color');
+const colorCtx = colorCanvas.getContext('2d', {
+  desynchronized: true,
+  preserveDrawingBuffer: true,
+});
+
+
 const backGroundCanvas = '#000F08';
 const snakeColor = '#24e561';
 const startingPointY = Math.floor(scale * ((canvasHeight / scale) / 2));
@@ -35,10 +46,10 @@ const DIRECTION_RIGTH = new Direction(1, 0);
 
 // Arreglo de colores de las frutas
 const colorArray = [
-  { color: 'blueRuin', rgb: '#0D3B66' },
-  { color: 'redMenace', rgb: '#EF476F' },
-  { color: 'yellowFever', rgb: '#FFC43A' },
-  { color: 'greenRevolution', rgb: '#5AFF15' },
+  { name: 'Blue Ruin', rgb: '#0D3B66' },
+  { name: 'Red Menace', rgb: '#EF476F' },
+  { name: 'Yellow Fever', rgb: '#FFC43A' },
+  { name: 'Green Revolution', rgb: '#5AFF15' },
 ];
 
 // key codes
