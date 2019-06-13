@@ -3,13 +3,15 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 class Snake {
-  constructor(sx = startingPointX, sy = startingPointY, w = scale, h = scale) {
+  constructor(sx = startingPointX, sy = startingPointY, w = scale, h = scale, color = colorArray[0]) {
     this.w = w;
     this.h = h;
     this.direction = DIRECTION_RIGTH;
     this.pieces = [{ x: sx, y: sy }];
     this.nextX = 0;
     this.nextY = 0;
+    this.bodyColor = color;
+    this.colorArray = [];
   }
 
   keepMoving(food) {
@@ -35,12 +37,16 @@ class Snake {
   }
 
   eats(food) {
-    return this.nextX === food.x && this.nextY === food.y;
+    if (this.nextX === food.x && this.nextY === food.y) {
+      this.bodyColor = food.color;
+      return true;
+    }
+    return false;
   }
 
   drawSnake() {
     this.pieces.forEach((piece, i) => {
-      ctx.fillStyle = (i === 0) ? '#5cb2ab' : 'white';
+      ctx.fillStyle = (i === 0) ? '#5cb2ab' : this.bodyColor.rgb;
       ctx.fillRect(piece.x, piece.y, scale, scale);
       ctx.strokeStyle = '#a8eae5';
       ctx.strokeRect(piece.x, piece.y, scale, scale);

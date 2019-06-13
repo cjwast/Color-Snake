@@ -20,10 +20,12 @@ const ctx = canvas.getContext('2d', {
   preserveDrawingBuffer: true,
 });
 
-const backGroundCanvas = '#344259';
+const backGroundCanvas = '#000F08';
 const snakeColor = '#24e561';
 const startingPointY = Math.floor(scale * ((canvasHeight / scale) / 2));
 const startingPointX = Math.floor(scale * ((canvasWidth / scale) / 2));
+const speedCoefficient = 100;
+
 
 // Constantes de referencia de dirección
 const DIRECTION_UP = new Direction(0, -1);
@@ -31,15 +33,26 @@ const DIRECTION_LEFT = new Direction(-1, 0);
 const DIRECTION_DOWN = new Direction(0, 1);
 const DIRECTION_RIGTH = new Direction(1, 0);
 
-// Arrow up
+// Arreglo de colores de las frutas
+const colorArray = [
+  { color: 'blueRuin', rgb: '#0D3B66' },
+  { color: 'redMenace', rgb: '#EF476F' },
+  { color: 'yellowFever', rgb: '#FFC43A' },
+  { color: 'greenRevolution', rgb: '#5AFF15' },
+];
+
+// key codes
 const ARROW_UP = 38;
 const ARROW_DOWN = 40;
 const ARROW_LEFT = 37;
 const ARROW_RIGHT = 39;
 const SPACEBAR = 32;
-
+const W = 87;
+const A = 65;
+const D = 68;
+const S = 83;
 
 // Variables de gameplay
-let speed = 15; // menor el numero, mayor la velocidad
+let speed = 30; // menor el numero, mayor la velocidad
 let interval = 0;
 let frs = 0;
