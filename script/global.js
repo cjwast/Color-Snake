@@ -22,8 +22,9 @@ const ctx = canvas.getContext('2d', {
 
 // Constantes para el control de colores
 const colorScale = 40;
-const colorWidth = 60;
-const colorHeight = 40;
+const colorWidth = 260;
+const colorHeight = 240;
+const colorFont = '35px News Cycle';
 const colorCanvas = document.getElementById('color');
 const colorCtx = colorCanvas.getContext('2d', {
   desynchronized: true,
@@ -48,7 +49,7 @@ const DIRECTION_RIGTH = new Direction(1, 0);
 const colorArray = [
   { name: 'Blue Ruin', rgb: '#0D3B66' },
   { name: 'Red Menace', rgb: '#EF476F' },
-  { name: 'Yellow Fever', rgb: '#FFC43A' },
+  { name: 'Yellow Fever', rgb: '#FFD575' },
   { name: 'Green Revolution', rgb: '#5AFF15' },
 ];
 

@@ -63,9 +63,10 @@ class Snake {
   drawColors() {
     this.colorArray.forEach((color, i) => {
       colorCtx.fillStyle = color.rgb;
-      colorCtx.fillRect(0, i * colorScale, 60, 40);
-      colorCtx.font = '20px Georgia';
-      colorCtx.fillText(color.name, 0, i * colorScale);
+      colorCtx.fillRect(0, i * colorScale, colorWidth, colorScale);
+      colorCtx.fillStyle = 'white';
+      colorCtx.font = colorFont;
+      colorCtx.fillText(color.name, 10, (i + 1) * colorScale - 5);
     });
   }
 
