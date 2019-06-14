@@ -19,7 +19,7 @@ class Enemy {
     this.bodyColor = color;
   }
 
-  keepMoving(snake, enemyArray) {
+  keepMoving(snake) {
     // Dibuja a los cuadros por segundo del interval
     this.drawEnemy();
 
@@ -66,21 +66,6 @@ class Enemy {
     } else {
       this.steps.push(DIRECTION_UP);
     }
-  }
-
-  // Evalua si existe otro enemigo en el siguiente paso
-  isThereAnEnemy(enemyArray) {
-    const newEnemyArray = enemyArray.filter(enemy => enemy.id !== this.id);
-    let isThere = false;
-    this.getNextPosition();
-    newEnemyArray.forEach((enemy) => {
-      enemy.pieces.forEach((piece) => {
-        if (this.nextX === piece.x && this.nextX === piece.y) {
-          isThere = true;
-        }
-      });
-    });
-    return isThere;
   }
 
   // Dejar solo la dirección mas corta

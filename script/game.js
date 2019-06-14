@@ -6,7 +6,7 @@ colorCanvas.height = colorHeight;
 
 const snake = new Snake();
 const food = new Food();
-const enemies = [];
+let enemy;
 
 let enemyPosition = { x: 0, y: 0 };
 let enemyColor = colorArray[0];
@@ -50,11 +50,6 @@ function showGameOverScreen() {
   }
 }
 
-// Funcion para dibujar los enemigos
-function enemiesAppear() {
-  enemies.forEach(enemy => enemy.keepMoving(snake, enemies));
-}
-
 // Funcion principal
 function run() {
   if (isGameOver()) {
@@ -69,7 +64,7 @@ function run() {
     // Establece los parametros para el enemigo
     enemyPosition = randomPosition();
     enemyColor = randomColor();
-    enemies.push(new Enemy(1, enemyPosition.x, enemyPosition.y, enemyColor));
+    enemy = new Enemy(1, enemyPosition.x, enemyPosition.y, enemyColor);
     firstRun = false;
   }
 
@@ -79,7 +74,7 @@ function run() {
     foodColor = randomColor();
   }
   food.appear(foodPosition.x, foodPosition.y, foodColor);
-  enemiesAppear();
+
   snake.drawColors();
   frs += 1;
 }
