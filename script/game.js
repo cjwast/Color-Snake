@@ -74,7 +74,7 @@ function run() {
     foodColor = randomColor();
   }
   food.appear(foodPosition.x, foodPosition.y, foodColor);
-
+  enemy.keepMoving(snake);
   snake.drawColors();
   frs += 1;
 }

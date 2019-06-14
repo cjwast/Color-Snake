@@ -12,8 +12,8 @@ class Direction {
 // Constantes de dibujo del tablero
 const scale = 20;
 const drawSpeed = 1000 / 240; // 100 / 60 son 60 cuados por segundo
-const canvasWidth = scale * 30;
-const canvasHeight = scale * 20;
+const canvasWidth = scale * 60;
+const canvasHeight = scale * 40;
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d', {
   desynchronized: true,
@@ -66,5 +66,6 @@ const S = 83;
 
 // Variables de gameplay
 let speed = 30; // menor el numero, mayor la velocidad
+let ventaja = 5;
 let interval = 0;
 let frs = 0;

@@ -6,7 +6,7 @@
 class Enemy {
   constructor(id, sx, sy, color = colorArray[0]) {
     this.id = id;
-    this.steps = [];
+    this.direction = DIRECTION_DOWN;
     this.pieces = [
       { x: sx - scale * 0, y: sy },
       { x: sx - scale * 1, y: sy },
@@ -23,14 +23,12 @@ class Enemy {
     // Dibuja a los cuadros por segundo del interval
     this.drawEnemy();
 
-    // Se mueve a la velocidad definida por speed
-    if (frs % (speed + 30) === 0) {
-      // Obtiene los pasos para acercarse a Snake
-      this.lookForSnake(snake);
-      this.setShortestStep(snake);
-      // Obtiene la siguiente posicion acorde al paso restante.
+    // Se mueve a la velocidad definida por speed + la ventaja
+    if (frs % (speed + ventaja) === 0) {
+      // Obtiene la direccion a tomar mas corta
+      this.direction = this.setShortestStep(snake);
+      // Obtiene la siguiente posicion acorde la dirección
       this.getNextPosition();
-      this.steps = [];
       // Inserta la el nuevo elemento a dibujar
       this.pieces.unshift({
         x: this.nextX,
@@ -51,44 +49,68 @@ class Enemy {
     });
   }
 
-  // Determina los pasos para comer a snake
-  lookForSnake(snake) {
-    // Evalua si Snake esta a la derecha
-    if (snake.pieces[0].x > this.pieces[0].x) {
-      this.steps.push(DIRECTION_RIGTH);
-    } else {
-      this.steps.push(DIRECTION_LEFT);
-    }
-
-    // Evalua si Snake esta arriba o abajo
-    if (snake.pieces[0].y > this.pieces[0].y) {
-      this.steps.push(DIRECTION_DOWN);
-    } else {
-      this.steps.push(DIRECTION_UP);
-    }
-  }
-
   // Dejar solo la dirección mas corta
   setShortestStep(snake) {
-    const step1X = (this.steps[0].x * scale) + this.pieces[0].x;
-    const step1Y = (this.steps[0].y * scale) + this.pieces[0].y;
+    const nextPositions = this.getAllDirections();
+    // Filtra solo las direcciones disponibles en el board y las que no lo tocan a si mismo
+    const availablePosition = nextPositions.filter((position) => {
+      if (position.x > 0 - scale && position.x < canvasWidth
+        && position.y > 0 - scale && position.y < canvasHeight) {
+        const aux = this.pieces.filter(piece => piece.x === position.x && piece.y === position.y);
+        return aux.length === 0;
+      }
+      return false;
+    });
 
-    const step2X = (this.steps[1].x * scale) + this.pieces[0].x;
-    const step2Y = (this.steps[1].y * scale) + this.pieces[0].y;
+    // Obtiene la menor distancia de las posibles direcciones a snake
+    const distanceToSnake = availablePosition.map((position) => {
+      const arrayDistances = snake.pieces.map(piece => ({
+        direction: position.direction,
+        distance: Math.sqrt(((piece.x - position.x) ** 2) + ((piece.y - position.y) ** 2)),
+      }));
+      arrayDistances.sort((a, b) => a.distance - b.distance);
+      return arrayDistances[0];
+    });
 
-    const distanceStep1 = Math.sqrt(((snake.pieces[0].x - step1X) ** 2) + ((snake.pieces[0].y - step1Y) ** 2));
-    const distanceStep2 = Math.sqrt(((snake.pieces[0].x - step2X) ** 2) + ((snake.pieces[0].y - step2Y) ** 2));
-
-    if (distanceStep1 > distanceStep2) {
-      this.steps.splice(0, 1);
-    } else {
-      this.steps.pop();
-    }
+    // Ordena las distancias
+    distanceToSnake.sort((a, b) => a.distance - b.distance);
+    return distanceToSnake[0].direction;
   }
 
   // Obtiene la siguiente posición en base al paso proximo.
   getNextPosition() {
-    this.nextX = (this.steps[0].x * scale) + this.pieces[0].x;
-    this.nextY = (this.steps[0].y * scale) + this.pieces[0].y;
+    this.nextX = (this.direction.x * scale) + this.pieces[0].x;
+    this.nextY = (this.direction.y * scale) + this.pieces[0].y;
+  }
+
+  // Calcula la siguiente posicion en todas las direcciones
+  getAllDirections() {
+    const nextPositions = [];
+
+    nextPositions.push({
+      x: (DIRECTION_DOWN.x * scale) + this.pieces[0].x,
+      y: (DIRECTION_DOWN.y * scale) + this.pieces[0].y,
+      direction: DIRECTION_DOWN,
+    });
+
+    nextPositions.push({
+      x: (DIRECTION_UP.x * scale) + this.pieces[0].x,
+      y: (DIRECTION_UP.y * scale) + this.pieces[0].y,
+      direction: DIRECTION_UP,
+    });
+
+    nextPositions.push({
+      x: (DIRECTION_LEFT.x * scale) + this.pieces[0].x,
+      y: (DIRECTION_LEFT.y * scale) + this.pieces[0].y,
+      direction: DIRECTION_LEFT,
+    });
+
+    nextPositions.push({
+      x: (DIRECTION_RIGTH.x * scale) + this.pieces[0].x,
+      y: (DIRECTION_RIGTH.y * scale) + this.pieces[0].y,
+      direction: DIRECTION_RIGTH,
+    });
+
+    return nextPositions;
   }
 }
