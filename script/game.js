@@ -8,6 +8,7 @@ const enemy = new Enemy();
 const food = new Food();
 let snake = new Snake();
 
+
 // Funciones
 function clearCanvas() {
   ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -32,9 +33,10 @@ function createSnake(position, color) {
 
 // Validar las condiciones de game over
 function isGameOver() {
-  return (snake.x + snake.w >= canvasWidth
-    || snake.y + snake.h >= canvasHeight
-    || snake.x <= 0 || snake.y <= 0);
+  let gameOver = false;
+  if (lives < 0) {
+    gameOver;
+  }
 }
 
 // Pantlla de game over
@@ -71,6 +73,7 @@ function run() {
     foodPosition = randomPosition();
     foodColor = randomColor();
     score += 1;
+    eat.play();
   }
 
   if (snakeResult.snakeEater.hitsEnemy) {
@@ -80,22 +83,25 @@ function run() {
     enemy.setsColor(enemyColor);
     if (snakeResult.snakeEater.eatsEnemy) {
       score += 1;
+      eat.play();
     } else {
       createSnake(randomPosition(), randomColor());
-      snake.lives -= 1;
+      lives -= 1;
+      newsnake.play();
     }
   }
 
   if (snakeResult.hitsWall) {
     createSnake(randomPosition(), randomColor());
-    snake.lives -= 1;
+    lives -= 1;
+    newsnake.play();
   }
 
   food.appear(foodPosition.x, foodPosition.y, foodColor);
 
   if (enemy.keepMoving(snake)) {
     createSnake(randomPosition(), randomColor());
-    snake.lives -= 1;
+    lives -= 1;
   }
   console.log(lives, score);
   snake.drawColors();
@@ -107,12 +113,16 @@ function keyDownEvent(e) {
   // Direccion de snake
   if (e.keyCode === W && snake.direction !== DIRECTION_DOWN) {
     snake.direction = DIRECTION_UP;
+    vertical.play();
   } else if (e.keyCode === S && snake.direction !== DIRECTION_UP) {
     snake.direction = DIRECTION_DOWN;
+    vertical.play();
   } else if (e.keyCode === A && snake.direction !== DIRECTION_RIGTH) {
     snake.direction = DIRECTION_LEFT;
+    vertical.play();
   } else if (e.keyCode === D && snake.direction !== DIRECTION_LEFT) {
     snake.direction = DIRECTION_RIGTH;
+    vertical.play();
   } else if (e.keyCode === SPACEBAR) {
     if (interval !== 0) {
       clearInterval(interval);

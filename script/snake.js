@@ -56,8 +56,8 @@ class Snake {
   }
 
   hitsWall() {
-    return (this.nextX < 0 || this.nextX > canvasWidth
-      || this.nextY < 0 || this.nextY > canvasHeight);
+    return (this.nextX < 0 || this.nextX > canvasWidth - scale
+      || this.nextY < 0 || this.nextY > canvasHeight - scale);
   }
 
   isSnakeEater(enemy) {
@@ -76,7 +76,7 @@ class Snake {
     this.pieces.forEach((piece, i) => {
       ctx.fillStyle = (i === 0) ? '#5cb2ab' : this.bodyColor.rgb;
       ctx.fillRect(piece.x, piece.y, scale, scale);
-      ctx.strokeStyle = '#a8eae5';
+      ctx.strokeStyle = 'white';
       ctx.strokeRect(piece.x, piece.y, scale, scale);
     });
   }

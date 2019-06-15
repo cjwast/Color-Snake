@@ -62,6 +62,15 @@ const startingPointY = Math.floor(scale * ((canvasHeight / scale) / 2));
 const startingPointX = Math.floor(scale * ((canvasWidth / scale) / 2));
 const speedCoefficient = 100;
 
+const newsnake = new Audio();
+const eat = new Audio();
+const vertical = new Audio();
+const horizontal = new Audio();
+
+newsnake.src = './../assets/Audio/newsnake.wav';
+eat.src = './../assets/Audio/eat.wav';
+vertical.src = './../assets/Audio/vertical.wav';
+horizontal.src = './../assets/Audio/horizontal.wav';
 
 let enemyPosition = { x: 0, y: 0 };
 let enemyColor = colorArray[0];
