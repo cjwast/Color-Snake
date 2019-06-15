@@ -4,8 +4,7 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 class Enemy {
-  constructor(id, sx, sy, color = colorArray[0]) {
-    this.id = id;
+  constructor(sx = 0, sy = 0, color = colorArray[0]) {
     this.direction = DIRECTION_DOWN;
     this.pieces = [
       { x: sx - scale * 0, y: sy },
@@ -36,7 +35,12 @@ class Enemy {
       });
       // Elimina la cola
       this.pieces.pop();
+
+      if (this.eats(snake)) {
+        return true;
+      }
     }
+    return false;
   }
 
   // Metodo para dibujar las piezas
@@ -112,5 +116,46 @@ class Enemy {
     });
 
     return nextPositions;
+  }
+
+  eats(snake) {
+    let eat = false;
+    snake.pieces.forEach((piece) => {
+      if (this.nextX === piece.x && this.nextY === piece.y) {
+        eat = true;
+      }
+    });
+    return eat;
+  }
+
+  setsPosition(px, py) {
+    this.pieces = [
+      { x: px - scale * 0, y: py },
+      { x: px - scale * 1, y: py },
+      { x: px - scale * 2, y: py },
+      { x: px - scale * 3, y: py },
+      { x: px - scale * 4, y: py },
+      { x: px - scale * 5, y: py },
+      { x: px - scale * 6, y: py },
+      { x: px - scale * 7, y: py },
+      { x: px - scale * 8, y: py },
+      { x: px - scale * 8, y: py },
+      { x: px - scale * 9, y: py },
+      { x: px - scale * 10, y: py },
+      { x: px - scale * 11, y: py },
+      { x: px - scale * 12, y: py },
+      { x: px - scale * 13, y: py },
+      { x: px - scale * 14, y: py },
+      { x: px - scale * 15, y: py },
+      { x: px - scale * 16, y: py },
+      { x: px - scale * 17, y: py },
+      { x: px - scale * 18, y: py },
+      { x: px - scale * 19, y: py },
+      { x: px - scale * 20, y: py },
+    ];
+  }
+
+  setsColor(color) {
+    this.bodyColor = color;
   }
 }

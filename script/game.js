@@ -4,17 +4,9 @@ canvas.height = canvasHeight;
 colorCanvas.width = colorWidth;
 colorCanvas.height = colorHeight;
 
-const snake = new Snake();
+const enemy = new Enemy();
 const food = new Food();
-let enemy;
-
-let enemyPosition = { x: 0, y: 0 };
-let enemyColor = colorArray[0];
-
-let foodPosition = { x: 0, y: 0 };
-let foodColor = colorArray[0];
-
-let firstRun = true;
+let snake = new Snake();
 
 // Funciones
 function clearCanvas() {
@@ -32,6 +24,10 @@ function randomPosition() {
 // Arroja un color aleatorio dentro del array de colores
 function randomColor() {
   return colorArray[Math.floor(Math.random() * colorArray.length)];
+}
+
+function createSnake(position, color) {
+  snake = new Snake(position.x, position.y, scale, scale, color);
 }
 
 // Validar las condiciones de game over
@@ -64,17 +60,44 @@ function run() {
     // Establece los parametros para el enemigo
     enemyPosition = randomPosition();
     enemyColor = randomColor();
-    enemy = new Enemy(1, enemyPosition.x, enemyPosition.y, enemyColor);
+    enemy.setsPosition(enemyPosition.x, enemyPosition.y);
+    enemy.setsColor(enemyColor);
     firstRun = false;
   }
 
   // Movimiento de snake y validacion si come o no
-  if (snake.keepMoving(food)) {
+  const snakeResult = snake.keepMoving(food, enemy);
+  if (snakeResult.eatsFood) {
     foodPosition = randomPosition();
     foodColor = randomColor();
+    score += 1;
   }
+
+  if (snakeResult.snakeEater.hitsEnemy) {
+    enemyPosition = randomPosition();
+    enemyColor = randomColor();
+    enemy.setsPosition(enemyPosition.x, enemyPosition.y);
+    enemy.setsColor(enemyColor);
+    if (snakeResult.snakeEater.eatsEnemy) {
+      score += 1;
+    } else {
+      createSnake(randomPosition(), randomColor());
+      snake.lives -= 1;
+    }
+  }
+
+  if (snakeResult.hitsWall) {
+    createSnake(randomPosition(), randomColor());
+    snake.lives -= 1;
+  }
+
   food.appear(foodPosition.x, foodPosition.y, foodColor);
-  enemy.keepMoving(snake);
+
+  if (enemy.keepMoving(snake)) {
+    createSnake(randomPosition(), randomColor());
+    snake.lives -= 1;
+  }
+  console.log(lives, score);
   snake.drawColors();
   frs += 1;
 }

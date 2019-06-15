@@ -9,36 +9,6 @@ class Direction {
   }
 }
 
-// Constantes de dibujo del tablero
-const scale = 20;
-const drawSpeed = 1000 / 240; // 100 / 60 son 60 cuados por segundo
-const canvasWidth = scale * 60;
-const canvasHeight = scale * 40;
-const canvas = document.getElementById('game');
-const ctx = canvas.getContext('2d', {
-  desynchronized: true,
-  preserveDrawingBuffer: true,
-});
-
-// Constantes para el control de colores
-const colorScale = 40;
-const colorWidth = 260;
-const colorHeight = 240;
-const colorFont = '35px News Cycle';
-const colorCanvas = document.getElementById('color');
-const colorCtx = colorCanvas.getContext('2d', {
-  desynchronized: true,
-  preserveDrawingBuffer: true,
-});
-
-
-const backGroundCanvas = '#000F08';
-const snakeColor = '#24e561';
-const startingPointY = Math.floor(scale * ((canvasHeight / scale) / 2));
-const startingPointX = Math.floor(scale * ((canvasWidth / scale) / 2));
-const speedCoefficient = 100;
-
-
 // Constantes de referencia de dirección
 const DIRECTION_UP = new Direction(0, -1);
 const DIRECTION_LEFT = new Direction(-1, 0);
@@ -64,8 +34,50 @@ const A = 65;
 const D = 68;
 const S = 83;
 
+// Constantes de dibujo del tablero
+const scale = 20;
+const drawSpeed = 1000 / 240; // 100 / 60 son 60 cuados por segundo
+const canvasWidth = scale * 60;
+const canvasHeight = scale * 40;
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d', {
+  desynchronized: true,
+  preserveDrawingBuffer: true,
+});
+
+// Constantes para el control de colores
+const colorScale = 40;
+const colorWidth = 260;
+const colorHeight = 240;
+const colorFont = '35px News Cycle';
+const colorCanvas = document.getElementById('color');
+const colorCtx = colorCanvas.getContext('2d', {
+  desynchronized: true,
+  preserveDrawingBuffer: true,
+});
+
+
+const backGroundCanvas = '#000F08';
+const startingPointY = Math.floor(scale * ((canvasHeight / scale) / 2));
+const startingPointX = Math.floor(scale * ((canvasWidth / scale) / 2));
+const speedCoefficient = 100;
+
+
+let enemyPosition = { x: 0, y: 0 };
+let enemyColor = colorArray[0];
+
+let foodPosition = { x: 0, y: 0 };
+let foodColor = colorArray[0];
+
+let snakePosition = { x: 0, y: 0 };
+let snakeColor = colorArray[0];
+
+let firstRun = true;
+let score = 0;
+let lives = 3;
+
 // Variables de gameplay
 let speed = 30; // menor el numero, mayor la velocidad
-let ventaja = 5;
+let ventaja = 25;
 let interval = 0;
 let frs = 0;

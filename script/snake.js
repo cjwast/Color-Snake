@@ -19,7 +19,10 @@ class Snake {
     this.colorArray = [];
   }
 
-  keepMoving(food) {
+  keepMoving(food, enemy) {
+    let eatsFood = false;
+    let snakeEater = { hitsEnemy: false, eatsEnemy: false };
+    let hitsWall = false;
     // Dibuja a los cuadros por segundo del interval
     this.drawSnake();
 
@@ -32,13 +35,16 @@ class Snake {
         y: this.nextY,
       });
 
-      // Si en la siguiente posicion come score++, FALSO=> remueve cola
-      if (this.eats(food)) {
-        return true;
+      // Si en la siguiente posicion come, FALSO=> remueve cola
+      eatsFood = this.eats(food);
+      snakeEater = this.isSnakeEater(enemy);
+      hitsWall = this.hitsWall();
+      if (eatsFood) {
+        return { eatsFood, snakeEater, hitsWall };
       }
       this.pieces.pop();
     }
-    return false;
+    return { eatsFood, snakeEater, hitsWall };
   }
 
   eats(food) {
@@ -47,6 +53,22 @@ class Snake {
       return true;
     }
     return false;
+  }
+
+  hitsWall() {
+    return (this.nextX < 0 || this.nextX > canvasWidth
+      || this.nextY < 0 || this.nextY > canvasHeight);
+  }
+
+  isSnakeEater(enemy) {
+    let hits = false;
+    enemy.pieces.forEach((piece) => {
+      if (this.nextX === piece.x && this.nextY === piece.y) {
+        hits = true;
+      }
+    });
+    const eats = hits && enemy.bodyColor === this.bodyColor;
+    return { hitsEnemy: hits, eatsEnemy: eats };
   }
 
   // Metodo para dibujar las piezas
