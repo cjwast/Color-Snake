@@ -19,8 +19,8 @@ const DIRECTION_RIGTH = new Direction(1, 0);
 const colorArray = [
   { name: 'Blue Ruin', rgb: '#0D3B66' },
   { name: 'Red Menace', rgb: '#EF476F' },
-  { name: 'Yellow Fever', rgb: '#FFD575' },
-  { name: 'Green Revolution', rgb: '#5AFF15' },
+  { name: 'Yellow Fever', rgb: '#8C7540' },
+  { name: 'Green Revolution', rgb: '#194606' },
 ];
 
 // key codes
@@ -90,6 +90,6 @@ let lives = 3;
 
 // Variables de gameplay
 let speed = 30; // menor el numero, mayor la velocidad
-let ventaja = 25;
+let ventaja = 20;
 let interval = 0;
 let frs = 0;

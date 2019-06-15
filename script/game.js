@@ -8,6 +8,13 @@ const enemy = new Enemy();
 const food = new Food();
 let snake = new Snake();
 
+$('#ventana-inicio').modal({
+  keyboard: false,
+  backdrop: 'static',
+  focus: true,
+  show: true,
+});
+
 
 // Funciones
 function clearCanvas() {
@@ -38,11 +45,16 @@ function isGameOver() {
 
 // Pantlla de game over
 function showGameOverScreen() {
-  // TODO: desarrollar la pantalla de game over, un posible popup modal
-  if (interval !== 0) {
-    clearInterval(interval);
-    interval = 0;
-  }
+
+  clearInterval(interval);
+
+
+  $('#gameOverScreen').modal({
+    keyboard: false,
+    backdrop: 'static',
+    focus: true,
+    show: true,
+  });
 }
 
 // Funcion principal
@@ -141,4 +153,11 @@ function keyDownEvent(e) {
 
 // INICIO
 onkeydown = keyDownEvent;
-interval = setInterval(run, drawSpeed);
+
+function start() {
+  $('#ventana-inicio').modal('hide');
+  $('#gameOverScreen').modal('hide');
+  lives = 3;
+  firstRun = true;
+  interval = setInterval(run, drawSpeed);
+}

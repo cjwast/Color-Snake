@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./css/style.css" />
     <link
       href="https://fonts.googleapis.com/css?family=News+Cycle&display=swap"
       rel="stylesheet"
@@ -14,15 +15,122 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="./css/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Questrial&display=swap"
+      rel="stylesheet"
+    />
     <title>Color Snake</title>
   </head>
   <body>
+    <div
+    id="ventana-inicio"
+      class="modal fade bd-example-modal-xl"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myExtraLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col">
+                <br />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4 justify-content-center">
+                <div class="card" style="width: 18rem;">
+                  <img
+                    src="./assets/img/blueSnake.jpg"
+                    class="card-img-top"
+                    alt="..."
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">Iniciar el juego</h5>
+                    <p class="card-text">
+                      Some quick example text to build on the card title and
+                      make up the bulk of the card's content.
+                    </p>
+                    <a href="#" onclick="start()" class="btn btn-primary">Go</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4 justify-content-center">
+                <div class="card" style="width: 18rem;">
+                  <img
+                    src="./assets/img/greenSnake.jpg"
+                    class="card-img-top"
+                    alt="..."
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">Instrucciones</h5>
+                    <p class="card-text">
+                      <ul>
+                        <li>Utilice las teclas W,A,S,D para desplazarse en el tablero.</li>
+                        <li>Uilice las flechas de navegación (arriba, abajo) para
+                            seleccionar el color con el cual atacar.</li>
+                        <li>Cambie el color de la serpiente con la flecha derecha.</li>
+                      </ul>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4 justify-content-center">
+                <div class="card" style="width: 18rem;">
+                  <img
+                    src="./assets/img/yellowSnake.jpg"
+                    class="card-img-top"
+                    alt="..."
+                  />
+                  <div class="card-body">
+                    <h5 class="card-title">Creditos</h5>
+                    <p class="card-text">
+                      <ul>
+                        <li>Programador => {Carlos Aguirre}</li>
+                        <li>Diseño => {Carlos Aguirre}</li>
+                        <li>Idea => {Carlos Aguirre}</li>
+                      </ul>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <br />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+  <!-- Modal -->
+  <div class="modal fade" id="gameOverScreen" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Game Over</h5>
+        </div>
+        <div class="modal-body">
+          Gracias por haber jugado, espero te hayas divertido.
+          <br>
+          Quieres reintentar?
+        </div>
+        <div class="modal-footer">
+          <button id="reintentar" onclick="start()" type="button" class="btn btn-primary">Reintentar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
     <!-- don't forget the favicon -->
     <div class="container-fluid">
       <div class="row">
         <div class="col">
-          <h1>Color Snake</h1>
+          <h1 id="main-title">Color Snake</h1>
         </div>
       </div>
       <div class="row">
@@ -32,7 +140,7 @@
         <div class="col">
           <div class="row">
             <div class="col">
-              <div class="card">
+              <div id="card-1" class="card">
                 <div class="card-body">
                   <h3 class="card-title">Colores disponibles</h3>
                   <canvas id="color"></canvas>
@@ -40,12 +148,17 @@
               </div>
             </div>
           </div>
-          <div id="vueApp" class="row">
+          <div class="row">
+            <div class="col">
+              <br />
+            </div>
+          </div>
+          <div class="row">
             <div class="col-sm-6">
               <div class="card">
                 <div class="card-body">
                   <h3 class="card-title">Score</h3>
-                  <p id="score" class="card-text"></p>
+                  <h1 id="score" class="card-text"></h1>
                 </div>
               </div>
             </div>
@@ -53,7 +166,7 @@
               <div class="card">
                 <div class="card-body">
                   <h3 class="card-title">Lives</h3>
-                  <p id="lives" class="card-text"></p>
+                  <h1 id="lives" class="card-text"></h1>
                 </div>
               </div>
             </div>
@@ -61,6 +174,21 @@
         </div>
       </div>
     </div>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
   </body>
   <script src="./script/global.js"></script>
   <script src="./script/enemy.js"></script>

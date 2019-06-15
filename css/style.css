@@ -1,3 +1,7 @@
+* {
+  font-family: "Questrial", sans-serif;
+}
+
 body {
   border: 0;
   padding: 0;
@@ -12,4 +16,23 @@ body {
 }
 p {
   color: white;
+}
+
+#main-title {
+  color: white;
+}
+
+#card-1 {
+  background-color: black;
+  color: white;
+}
+#lives {
+  color: black;
+}
+#score {
+  color: black;
+}
+
+.card-text {
+  color: black;
 }
