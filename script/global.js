@@ -37,7 +37,7 @@ const S = 83;
 // Constantes de dibujo del tablero
 const scale = 20;
 const drawSpeed = 1000 / 240; // 100 / 60 son 60 cuados por segundo
-const canvasWidth = scale * 60;
+const canvasWidth = scale * 50;
 const canvasHeight = scale * 40;
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d', {
@@ -55,6 +55,9 @@ const colorCtx = colorCanvas.getContext('2d', {
   desynchronized: true,
   preserveDrawingBuffer: true,
 });
+
+const htmlLives = document.getElementById('lives');
+const htmlScore = document.getElementById('score');
 
 
 const backGroundCanvas = '#000F08';

@@ -19,16 +19,45 @@
   </head>
   <body>
     <!-- don't forget the favicon -->
-    <div class="container">
-      <div class="row">
-        <h1>Color Snake</h1>
-      </div>
+    <div class="container-fluid">
       <div class="row">
         <div class="col">
+          <h1>Color Snake</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-8">
           <canvas id="game"></canvas>
         </div>
-        <div class="col-1">
-          <canvas id="color"></canvas>
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <div class="card">
+                <div class="card-body">
+                  <h3 class="card-title">Colores disponibles</h3>
+                  <canvas id="color"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="vueApp" class="row">
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h3 class="card-title">Score</h3>
+                  <p id="score" class="card-text"></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <h3 class="card-title">Lives</h3>
+                  <p id="lives" class="card-text"></p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

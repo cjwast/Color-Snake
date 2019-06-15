@@ -33,10 +33,7 @@ function createSnake(position, color) {
 
 // Validar las condiciones de game over
 function isGameOver() {
-  let gameOver = false;
-  if (lives < 0) {
-    gameOver;
-  }
+  return (lives <= 0);
 }
 
 // Pantlla de game over
@@ -82,7 +79,9 @@ function run() {
     enemy.setsPosition(enemyPosition.x, enemyPosition.y);
     enemy.setsColor(enemyColor);
     if (snakeResult.snakeEater.eatsEnemy) {
-      score += 1;
+      score += 10;
+      snake.colorArray.splice(0, 1);
+      snake.bodyColor = snake.colorArray.length > 0 ? snake.colorArray[0] : randomColor();
       eat.play();
     } else {
       createSnake(randomPosition(), randomColor());
@@ -103,7 +102,8 @@ function run() {
     createSnake(randomPosition(), randomColor());
     lives -= 1;
   }
-  console.log(lives, score);
+  htmlLives.innerText = lives;
+  htmlScore.innerText = score;
   snake.drawColors();
   frs += 1;
 }
